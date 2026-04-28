@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import pool from "../config/db.js";
 
 class UserModel {
@@ -54,6 +55,38 @@ class UserModel {
       };
     } catch (error) {
       console.error("Error en UserModel.createUser: ", error.message);
+      throw error;
+    }
+  }
+
+  static async login({ email, password }) {
+    try {
+      // Verificar si el usuario existe
+      const [userData] = await pool.query(
+        "SELECT * FROM player WHERE email = ?",
+        [email],
+      );
+
+      if (userData.length === 0) {
+        throw new Error("El usuario no existe");
+      }
+
+      const user = userData[0];
+
+      // Verificar la contraseña
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        throw new Error("Contraseña incorrecta");
+      }
+
+      return {
+        uid: user.id_player,
+        username: user.username,
+        email: user.email,
+      };
+    } catch (error) {
+      console.error("Error en UserModel.login: ", error.message);
       throw error;
     }
   }

@@ -51,6 +51,24 @@ class UserController {
       next(error);
     }
   }
+
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+
+      const userData = await UserModel.login({ email, password });
+      console.log("Inicio de sesión exitoso: ", userData);
+      res.json({
+        success: true,
+        message: "Inicio de sesión exitoso",
+        data: userData,
+      });
+    } catch (error) {
+      console.error("Error en UserController.login: ", error.message);
+
+      next(error);
+    }
+  }
 }
 
 export default UserController;
