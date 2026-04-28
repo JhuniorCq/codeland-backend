@@ -9,3 +9,5 @@ export const DB = {
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
 };
+
+export const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;

@@ -1,4 +1,6 @@
+import { SALT_ROUNDS } from "../config/config.js";
 import UserModel from "../models/user.model.js";
+import bcrypt from "bcrypt";
 
 class UserController {
   static async getUser(req, res, next) {
@@ -29,11 +31,12 @@ class UserController {
       const uid = crypto.randomUUID();
 
       // Encriptar la contraseña con bcrypt
+      const passwordHashed = await bcrypt.hash(password, SALT_ROUNDS);
 
       const userData = await UserModel.createUser({
         username,
         email,
-        password,
+        password: passwordHashed,
         uid,
       });
 
