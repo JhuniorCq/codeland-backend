@@ -3,24 +3,6 @@ import UserModel from "../models/user.model.js";
 import bcrypt from "bcrypt";
 
 class UserController {
-  static async getUser(req, res, next) {
-    try {
-      const { uid } = req.params;
-
-      const userData = await UserModel.getUser({ uid });
-
-      res.json({
-        success: true,
-        message: "Usuario obtenido exitosamente",
-        data: userData,
-      });
-    } catch (error) {
-      console.error("Error en UserController.getUser: ", error.message);
-
-      next(error);
-    }
-  }
-
   static async createUser(req, res, next) {
     try {
       const { username, email, password } = req.body;
@@ -65,6 +47,24 @@ class UserController {
       });
     } catch (error) {
       console.error("Error en UserController.login: ", error.message);
+
+      next(error);
+    }
+  }
+
+  static async getUser(req, res, next) {
+    try {
+      const { uid } = req.params;
+
+      const userData = await UserModel.getUser({ uid });
+
+      res.json({
+        success: true,
+        message: "Usuario obtenido exitosamente",
+        data: userData,
+      });
+    } catch (error) {
+      console.error("Error en UserController.getUser: ", error.message);
 
       next(error);
     }

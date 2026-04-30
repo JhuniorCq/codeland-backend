@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { SERVER_HOST, SERVER_PORT } from "./src/config/config.js";
 import userRouter from "./src/routes/user.routes.js";
+import progressRouter from "./src/routes/progress.routes.js";
 import handleError from "./src/middlewares/handleError.js";
 import handleError404 from "./src/middlewares/handleError404.js";
 
@@ -20,6 +21,9 @@ app.use(morgan("dev"));
 
 // Rutas del usuario
 app.use("/user", userRouter);
+
+// Rutas del progreso
+app.use("/progress", progressRouter);
 
 // Middleware para manejar rutas no encontradas
 app.use(handleError404);
