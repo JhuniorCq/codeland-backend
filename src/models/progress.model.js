@@ -34,8 +34,6 @@ class ProgressModel {
           completed = IF(completed = 1, 1, VALUES(completed))
       `;
 
-      // Esto: completed = IF(completed = 1, 1, VALUES(completed)) -> Es necesario, ya que si el usuario ya ganó el juego y vuelve a jugar, pero pierde, entonces el nivel se actualizaría a INCOMPLETO, cuando ya había sido completado
-
       const values = [uid, idLevel, completed];
 
       const [progressInsert] = await pool.query(query, values);
@@ -44,7 +42,6 @@ class ProgressModel {
         throw new Error("No se pudo guardar el progreso");
       }
 
-      // Creo que no es necesario devolver los datos del progreso guardado, ya que una vez en el front se sepa que se guardaron correctamente los datos del progreso, entonces desde el front se tendrá que hacer una nueva consulta (a getProgress) para obtener los datos actualizados de dese nivel.
       return "Progreso guardado exitosamente";
     } catch (error) {
       console.error("Error en ProgressModel.saveProgress: ", error.message);
