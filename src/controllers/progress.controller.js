@@ -23,6 +23,27 @@ class ProgressController {
       next(error);
     }
   }
+
+  static async getProgress(req, res, next) {
+    try {
+      const { uid } = req.params;
+
+      const completedLevels = await ProgressModel.getCompletedLevels({ uid });
+
+      res.json({
+        success: true,
+        message: "Progreso obtenido exitosamente",
+        data: { completedLevels },
+      });
+    } catch (error) {
+      console.error(
+        "Error en ProgressController.getProgress: ",
+        error.message,
+      );
+
+      next(error);
+    }
+  }
 }
 
 export default ProgressController;

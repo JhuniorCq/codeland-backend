@@ -50,6 +50,23 @@ class ProgressModel {
     }
   }
 
+  static async getCompletedLevels({ uid }) {
+    try {
+      const [rows] = await pool.query(
+        "SELECT id_level FROM progress WHERE id_player = ? AND completed = 1",
+        [uid],
+      );
+
+      return rows.map((row) => row.id_level);
+    } catch (error) {
+      console.error(
+        "Error en ProgressModel.getCompletedLevels: ",
+        error.message,
+      );
+      throw error;
+    }
+  }
+
   // TODO: Verificar esto
   static async getProgress({ uid, idLevel }) {
     try {
